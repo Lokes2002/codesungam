@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard/dashboard';
 import CustomNavbar from './components/Navbar/CustomNavbar';
 import Attendance from './components/Classes/attandance';
 import Notification from './components/Notification/notification';
+import Profile from './components/Profile/Profile';
 
 function App() {
     const jwt = localStorage.getItem("jwt");
@@ -31,7 +32,6 @@ function App() {
 
     return (
         <ThemeProvider>
-            <CustomNavbar/>
             <div className="">
             <Routes>   
                 <Route  path="/*" element={ auth.user ? ( <><CustomNavbar /> <HomePage /> </> ) : (
@@ -39,6 +39,7 @@ function App() {
                 <Route path="/dashboard" element={( <><CustomNavbar /> <Dashboard/> </> )} />
                     <Route path="/attendance" element={( <><CustomNavbar /> <Attendance/> </> )} />
                     <Route path="/notification" element={( <><CustomNavbar /> <Notification/> </> )} />
+                    <Route path="/profile/:id" element={( <><CustomNavbar /> <Profile/> </> )} />
                
                 </Routes>
             </div>
