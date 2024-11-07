@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useDispatch } from 'react-redux';
 import avatar from './img1.jpg';
 import { logout } from '../../Store/Auth/Action';
 import { useTheme } from '../../ThemeContext/ThemeContext';
+import { Box } from '@mui/material';
 
 function CustomNavbar() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();  // Initialize navigate
     const { darkMode } = useTheme();
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
+    // Example user ID, replace with dynamic user ID if available
+    const userId = 16;
+
     const handleLogout = () => {
         dispatch(logout());
+        navigate('/authentication');  // Navigate to Authentication page on logout
+    };
+
+    const handleProfile = () => {
+        navigate(`/profile/${userId}`);  // Navigate to Profile page with user ID
     };
 
     return (
@@ -53,7 +63,7 @@ function CustomNavbar() {
                     </div>
 
                     {/* Profile Dropdown */}
-                    <div className="relative">
+                    <div className="relative z-50">  {/* Add z-50 here */}
                         <button
                             className="flex items-center focus:outline-none"
                             onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -65,13 +75,17 @@ function CustomNavbar() {
                             />
                         </button>
                         {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-48" style={{ backgroundColor: darkMode ? '#1a1a1a' : '#fff' }}>
-                                <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100 transition duration-300 no-underline" style={{ color: darkMode ? '#fff' : '#000' }}>
+                            <div className="absolute right-0 mt-2 w-48" style={{ backgroundColor: darkMode ? '#1a1a1a' : '#fff', zIndex: 100 }}>
+                                <button
+                                    onClick={handleProfile}  // Navigate to Profile page with user ID
+                                    className="block px-4 py-2 hover:bg-gray-100 transition duration-300 no-underline"
+                                    style={{ color: darkMode ? '#fff' : '#000' }}
+                                >
                                     Profile
-                                </Link>
+                                </button>
                                 <div className="border-t border-gray-200"></div>
                                 <button
-                                    onClick={handleLogout}
+                                    onClick={handleLogout}  // Handle Logout
                                     className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition duration-300"
                                     style={{ color: darkMode ? '#fff' : '#000' }}
                                 >
@@ -82,6 +96,7 @@ function CustomNavbar() {
                     </div>
                 </div>
             </div>
+            
 
             {/* Mobile Menu */}
             {menuOpen && (
@@ -91,6 +106,9 @@ function CustomNavbar() {
                     <Link to="/events" className="block px-4 py-2 hover:bg-gray-100 no-underline">Events</Link>
                     <Link to="/attendance" className="block px-4 py-2 hover:bg-gray-100 no-underline">Classes</Link>
                     <Link to="/notification" className="block px-4 py-2 hover:bg-gray-100 no-underline">Notification</Link>
+                    <Link to="profile/:id " className="block px-4 py-2 hover:bg-gray-100 no-underline">Profile</Link>
+            
+            
                 </div>
             )}
         </nav>
