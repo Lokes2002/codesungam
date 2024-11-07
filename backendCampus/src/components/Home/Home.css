@@ -1,0 +1,119 @@
+.section, .box, .map-section {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.box {
+    background-color: #f9f9f9;
+}
+
+.map-container {
+    margin: 10px 0;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.carousel-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.content {
+    padding: 20px;
+}
+
+.feature-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+}
+
+.feature-box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    width: calc(30% - 20px); /* 3 boxes per row */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.feature-box h3 {
+    margin-bottom: 10px;
+}
+
+.map-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the map section */
+    margin: 20px 0; /* Add some margin */
+}
+
+.map-container {
+    position: relative; /* Position relative for the search input */
+    width: 100%; /* Make it responsive */
+    max-width: 800px; /* Limit the max width */
+}
+
+.search-input {
+    position: absolute; /* Position it absolutely */
+    top: 10px; /* Adjust this to position it above the map */
+    right: 10px; /* Position it on the right */
+    padding: 8px; /* Add some padding */
+    border: 1px solid #ccc; /* Border styling */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.footer-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f8f8;
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.contact-info, .social-media {
+    text-align: center;
+}
+
+.social-media a {
+    display: inline-block;
+    margin: 0 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.social-media a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
