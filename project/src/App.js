@@ -33,12 +33,13 @@ function App() {
         <ThemeProvider>
             <CustomNavbar/>
             <div className="">
-                <Routes>
-                    <Route path="/*" element={<HomePage/>} />
-                    <Route path="/dashboard" element={<Dashboard/>} />
-                    <Route path="/attendance" element={<Attendance/>} />
-                    <Route path="/notification" element={<Notification/>} />
-
+            <Routes>   
+                <Route  path="/*" element={ auth.user ? ( <><CustomNavbar /> <HomePage /> </> ) : (
+      <Authentication /> )}/> 
+                <Route path="/dashboard" element={( <><CustomNavbar /> <Dashboard/> </> )} />
+                    <Route path="/attendance" element={( <><CustomNavbar /> <Attendance/> </> )} />
+                    <Route path="/notification" element={( <><CustomNavbar /> <Notification/> </> )} />
+               
                 </Routes>
             </div>
         </ThemeProvider>
