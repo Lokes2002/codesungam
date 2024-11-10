@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import { Avatar, Box, Button, Tab } from '@mui/material';
+import { Avatar, Box, Button } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
 import ProfileModel from './ProfileModel';
 import { useSelector, useDispatch } from 'react-redux';
 import { findUserById, followUserAction } from '../../Store/Auth/Action';
 import { format } from 'date-fns';
 
 const Profile = () => {
-    const [tabValue, setTabValue] = useState("1");
     const [openProfileModel, setOpenProfileModel] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { auth, twit } = useSelector(store => store);
+    const { auth } = useSelector(store => store);
     const { id } = useParams();
-
     const loggedInUserId = useSelector(store => store.auth.user?.id);
 
     const handleOpenProfileModel = () => setOpenProfileModel(true);
@@ -32,18 +29,9 @@ const Profile = () => {
         });
     };
 
-    const handleTabChange = (event, newValue) => {
-        setTabValue(newValue);
-    };
-
     useEffect(() => {
         dispatch(findUserById(id));
-       
     }, [dispatch, id]);
-
-    const handleProfileUpdate = () => {
-        dispatch(findUserById(id));
-    };
 
     const joinedDate = auth.findUser?.joinedDate ? format(new Date(auth.findUser?.joinedDate), 'MMMM yyyy') : 'Unknown';
 
@@ -56,13 +44,13 @@ const Profile = () => {
     };
 
     const handleMessageClick = () => {
-        navigate(`/chat/${id}`); // Navigate to the Chat page with the user ID
+        navigate(`/chat/${id}`);
     };
 
     return (
-        <div>
-            <section className="bg-white z-50 flex items-center sticky top-0 bg-opacity-95">
-                <KeyboardBackspaceIcon className="cursor-pointer" onClick={handleBack} />
+        <div className="bg-black text-white min-h-screen">
+            <section className="bg-black z-50 flex items-center sticky top-0 bg-opacity-95">
+                <KeyboardBackspaceIcon className="cursor-pointer text-white" onClick={handleBack} />
                 <h1 className="py-5 text-xl font-bold opacity-90 ml-5">{auth.findUser?.fullName}</h1>
             </section>
             <section>
@@ -74,7 +62,7 @@ const Profile = () => {
                         className="transform -translate-y-24"
                         alt="Profile Picture"
                         src={auth.findUser?.image}
-                        sx={{ width: "10rem", height: "10rem", border: "4px solid white" }}
+                        sx={{ width: "10rem", height: "10rem", border: "4px solid black" }}
                     />
                     {auth.findUser?.reqUser ? (
                         <Button onClick={handleOpenProfileModel} variant="contained" sx={{ borderRadius: "20px" }}>
@@ -89,14 +77,14 @@ const Profile = () => {
                 <div>
                     <div className="flex items-center">
                         <h1 className="font-bold text-lg">{auth.findUser?.fullName}</h1>
-                        {true && (
+                        {auth.findUser?.verified && (
                             <img className="ml-2 w-4 h-4" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv6CEBObsZa5RkI_eVLNvFbxy_SCpTHMSa3A&s" alt="Verified" />
                         )}
                     </div>
                     <h1 className="text-gray-500">@{auth.findUser?.fullName?.split(" ").join("_").toLowerCase()}</h1>
                 </div>
                 <div className="mt-2 space-y-3">
-                    <p>{auth.findUser?.bio}</p>
+                    <p>{auth.findUser?.bio || 'No bio provided'}</p>
                     <div className="py-1 flex space-x-5">
                         <div className="flex items-center text-gray-500">
                             <BusinessCenterIcon />
@@ -111,7 +99,19 @@ const Profile = () => {
                             <p className="ml-2">Joined {joinedDate}</p>
                         </div>
                     </div>
-                    <div className="flex items-center space-x-5">
+                    {/* Displaying skills if available */}
+                    {auth.findUser?.skills && (
+                        <div className="mt-3 flex items-center text-gray-500">
+                            <p className="ml-2">Skills: {auth.findUser?.skills.join(', ') || 'Not Provided'}</p>
+                        </div>
+                    )}
+                    {/* Displaying institute name if available */}
+                    {auth.findUser?.instituteName && (
+                        <div className="mt-3 flex items-center text-gray-500">
+                            <p className="ml-2">Institute: {auth.findUser?.instituteName || 'Not Provided'}</p>
+                        </div>
+                    )}
+                    <div className="flex items-center space-x-5 mt-4">
                         <div className="flex items-center space-x-1 font-semibold cursor-pointer" onClick={handleNavigateToFollowing}>
                             <span>{auth.findUser?.following?.length || 0}</span>
                             <span className="text-gray-500">Following</span>
@@ -121,37 +121,14 @@ const Profile = () => {
                             <span className="text-gray-500">Followers</span>
                         </div>
                         {auth.findUser?.id !== loggedInUserId && (
-                            <Button
-                                variant="outlined"
-                                sx={{ marginLeft: 'auto', borderRadius: "40px" }}
-                                onClick={handleMessageClick}
-                            >
+                            <Button variant="outlined" sx={{ marginLeft: 'auto', borderRadius: "40px" }} onClick={handleMessageClick}>
                                 Message
                             </Button>
                         )}
                     </div>
                 </div>
             </section>
-            <section className="py-5">
-                <Box sx={{ width: '100%', typography: 'body1' }}>
-                    <TabContext value={tabValue}>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <TabList onChange={handleTabChange} aria-label="Profile Tabs">
-                                <Tab label="Tweets" value="1" />
-                                <Tab label="Replies" value="2" />
-                                <Tab label="Media" value="3" />
-                                <Tab label="Likes" value="4" />
-                            </TabList>
-                        </Box>
-    
-                        <TabPanel value="2">User's replies</TabPanel>
-                        <TabPanel value="3">Media</TabPanel>
-                    </TabContext>
-                </Box>
-            </section>
-            <section>
-                <ProfileModel handleClose={handleCloseProfileModel} open={openProfileModel} onUpdate={handleProfileUpdate} />
-            </section>
+            {openProfileModel && <ProfileModel open={openProfileModel} handleClose={handleCloseProfileModel} />}
         </div>
     );
 };

@@ -37,6 +37,8 @@ const ProfileModel = ({ open, handleClose }) => {
             website: auth.user?.website || '',
             location: auth.user?.location || '',
             bio: auth.user?.bio || '',
+            skills: auth.user?.skills || '', // Adding skills
+            institute: auth.user?.institute || '', // Adding institute name
             backgroundImage: auth.user?.backgroundImage || '',
             image: auth.user?.image || '',
         });
@@ -55,6 +57,8 @@ const ProfileModel = ({ open, handleClose }) => {
             website: '',
             location: '',
             bio: '',
+            skills: '', // Adding skills field
+            institute: '', // Adding institute field
             backgroundImage: '',
             image: '',
         },
@@ -94,96 +98,111 @@ const ProfileModel = ({ open, handleClose }) => {
                             <Button type='submit'>Save</Button>
                         </div>
                         <div className="overflow-y-scroll overflow-x-hidden h-[80vh]">
-                            <React.Fragment>
-                                <div className="w-full">
+                            <div className="w-full">
+                                <div className="relative">
+                                    <img
+                                        className="w-full h-[12rem] object-cover object-center"
+                                        src={selectedBackgroundImage || formik.values.backgroundImage || ''}
+                                        alt="BackgroundImage"
+                                    />
+                                    <input
+                                        type="file"
+                                        className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+                                        name="backgroundImage"
+                                        onChange={handleImageChange}
+                                    />
+                                </div>
+
+                                <div className="w-full transform -translate-y-20 ml-4 h-[6rem]">
                                     <div className="relative">
-                                        <img
-                                            className="w-full h-[12rem] object-cover object-center"
-                                            src={selectedBackgroundImage || formik.values.backgroundImage || ''}
-                                            alt="BackgroundImage"
+                                        <Avatar
+                                            sx={{ width: "10rem", height: "10rem", border: "4px solid white" }}
+                                            src={selectedImage || formik.values.image || auth.user?.image || ''}
+                                            alt="Profile Image"
                                         />
                                         <input
-                                            type="file"
-                                            className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                                            name="backgroundImage"
+                                            className="absolute top-0 left-0 w-[10rem] h-full opacity-0 cursor-pointer"
                                             onChange={handleImageChange}
+                                            name="image"
+                                            type="file"
                                         />
                                     </div>
-
-                                    <div className="w-full transform -translate-y-20 ml-4 h-[6rem]">
-                                        <div className="relative">
-                                            <Avatar
-                                                sx={{ width: "10rem", height: "10rem", border: "4px solid white" }}
-                                                src={selectedImage || formik.values.image || auth.user?.image || ''}
-                                                alt=""
-                                            />
-                                            <input
-                                                className="absolute top-0 left-0 w-[10rem] h-full opacity-0 cursor-pointer"
-                                                onChange={handleImageChange}
-                                                name="image"
-                                                type="file"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-3">
-                                        <TextField
-                                            fullWidth
-                                            id="fullName"
-                                            name="fullName"
-                                            label="Full Name"
-                                            value={formik.values.fullName}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.fullName && Boolean(formik.errors.fullName)}
-                                            helperText={formik.touched.fullName && formik.errors.fullName}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            multiline
-                                            rows={4}
-                                            id="bio"
-                                            name="bio"
-                                            label="Bio"
-                                            value={formik.values.bio}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.bio && Boolean(formik.errors.bio)}
-                                            helperText={formik.touched.bio && formik.errors.bio}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            id="website"
-                                            name="website"
-                                            label="Website"
-                                            value={formik.values.website}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.website && Boolean(formik.errors.website)}
-                                            helperText={formik.touched.website && formik.errors.website}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            id="location"
-                                            name="location"
-                                            label="Location"
-                                            value={formik.values.location}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.location && Boolean(formik.errors.location)}
-                                            helperText={formik.touched.location && formik.errors.location}
-                                        />
-                                        <div className="my-3">
-                                            <p className="text-lg">Birth date</p>
-                                            <p className="text-2xl">October 26, 1999</p>
-                                        </div>
-                                        <p className="py-3 text-lg">Edit Professional Profile</p>
-                                    </div>
-
                                 </div>
-                            </React.Fragment>
+
+                                <div className="space-y-3">
+                                    <TextField
+                                        fullWidth
+                                        id="fullName"
+                                        name="fullName"
+                                        label="Full Name"
+                                        value={formik.values.fullName}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                        helperText={formik.touched.fullName && formik.errors.fullName}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        multiline
+                                        rows={4}
+                                        id="bio"
+                                        name="bio"
+                                        label="Bio"
+                                        value={formik.values.bio}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.bio && Boolean(formik.errors.bio)}
+                                        helperText={formik.touched.bio && formik.errors.bio}
+                                        inputProps={{
+                                            maxLength: 500, // Limit bio to 500 characters
+                                        }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        id="website"
+                                        name="website"
+                                        label="Website"
+                                        value={formik.values.website}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.website && Boolean(formik.errors.website)}
+                                        helperText={formik.touched.website && formik.errors.website}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        id="location"
+                                        name="location"
+                                        label="Location"
+                                        value={formik.values.location}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.location && Boolean(formik.errors.location)}
+                                        helperText={formik.touched.location && formik.errors.location}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        id="skills"
+                                        name="skills"
+                                        label="Skills"
+                                        value={formik.values.skills}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.skills && Boolean(formik.errors.skills)}
+                                        helperText={formik.touched.skills && formik.errors.skills}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        id="institute"
+                                        name="institute"
+                                        label="Institute"
+                                        value={formik.values.institute}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.institute && Boolean(formik.errors.institute)}
+                                        helperText={formik.touched.institute && formik.errors.institute}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </Box>
             </Modal>
         </div>
     );
-}
+};
 
 export default ProfileModel;

@@ -1,13 +1,42 @@
 import React, { useState } from 'react';
-import { Button, Grid, Box, Typography } from '@mui/material';
+import { Button, Grid, Box, Typography, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import { GoogleLogin } from '@react-oauth/google';
+import axios from 'axios'; // Import Axios for API calls
 import AuthModal from './AuthModel'; 
 
 const Authentication = () => {
     const [openAuthModel, setOpenAuthModel] = useState(false);
+    const [loginType, setLoginType] = useState('user'); // Default 'user' login type
 
     const handleOpenAuthModel = () => setOpenAuthModel(true);
     const handleCloseAuthModel = () => setOpenAuthModel(false);
+
+    // Handle Google Login Success
+    const handleGoogleLogin = async (response) => {
+        try {
+            const { tokenId } = response;  // Get the tokenId from Google response
+
+            // Backend endpoint to verify Google token
+            const res = await axios.post('http://localhost:5000/auth/google-signin', {
+                token: tokenId,
+            });
+
+            // If response is successful, store token in localStorage
+            if (res.data.success) {
+                localStorage.setItem('token', res.data.token);  // Store JWT token in localStorage
+                console.log('Login successful');
+            } else {
+                console.error('Login failed');
+            }
+        } catch (error) {
+            console.error('Error during Google Login:', error);
+        }
+    };
+
+    // Handle login type change
+    const handleLoginTypeChange = (event) => {
+        setLoginType(event.target.value); // Update login type based on selection
+    };
 
     return (
         <Box
@@ -54,23 +83,40 @@ const Authentication = () => {
                             ENJOY THIS MOMENT TODAY
                         </Typography>
                         <Box sx={{ width: '100%', maxWidth: '330px', mx: 'auto' }}>
+                            {/* Google Login Button */}
                             <GoogleLogin 
-                                onSuccess={(response) => console.log(response)} 
-                                onFailure={(response) => console.error(response)} 
+                                onSuccess={handleGoogleLogin} // Pass the success function
+                                onFailure={(response) => console.error(response)} // Handle failure
                                 width={330} 
                             />
                             <Typography variant="body1" sx={{ py: 2 }}>
                                 OR
                             </Typography>
-                            <Button 
-                                onClick={handleOpenAuthModel} 
-                                fullWidth 
-                                variant="contained" 
-                                size="large" 
-                                sx={{ borderRadius: '29px', py: 1 }}
+
+                            {/* Login Type Selection: User or Admin */}
+                            <RadioGroup
+                                value={loginType}
+                                onChange={handleLoginTypeChange}
+                                row
+                                sx={{ justifyContent: 'center', mb: 2 }}
                             >
-                                Create Account
-                            </Button>
+                                <FormControlLabel value="user" control={<Radio />} label="User" sx={{ color: 'white' }} />
+                                <FormControlLabel value="admin" control={<Radio />} label="Admin" sx={{ color: 'white' }} />
+                            </RadioGroup>
+
+                            {/* Render 'Create Account' Button only for 'user' */}
+                            {loginType === 'user' && (
+                                <Button 
+                                    onClick={handleOpenAuthModel} 
+                                    fullWidth 
+                                    variant="contained" 
+                                    size="large" 
+                                    sx={{ borderRadius: '29px', py: 1 }}
+                                >
+                                    Create Account
+                                </Button>
+                            )}
+
                             <Typography variant="body2" sx={{ mt: 2 }}>
                                 By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.
                             </Typography>

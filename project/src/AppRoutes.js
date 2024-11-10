@@ -13,7 +13,7 @@ function AppRoutes() {
         <Routes>
             <Route path="/home" element={<HomePage/>} />
             <Route path="/event" element={<EventList />} />
-            <Route path="/dashboard" element={<Dashboard/>} />
+            <Route path="/profile/:id" element={<Dashboard/>} />
             <Route path="/attendance" element={<Attendance/>} />
             <Route path="/notification" element={<Notification/>} />
             <Route path="/events" element={<Event/>} />

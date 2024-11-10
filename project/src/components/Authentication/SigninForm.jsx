@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { loginUser } from '../../Store/Auth/Action';
 import { blue } from '@mui/material/colors';
+import { useNavigate } from 'react-router-dom'; // Importing useNavigate for routing
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -14,6 +15,7 @@ const validationSchema = Yup.object().shape({
 
 const SigninForm = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();  // Hook to navigate between pages
 
     const formik = useFormik({
         initialValues: {
@@ -22,7 +24,15 @@ const SigninForm = () => {
         },
         validationSchema,
         onSubmit: (values) => {
-            dispatch(loginUser(values)); // Dispatch loginUser action with form values
+            // Dispatch login action
+            dispatch(loginUser(values));
+
+            // Check for admin credentials
+            if (values.email === "admin@gmail.com" && values.password === "12345") {
+                navigate("/admin");  // Navigate to admin page if credentials match
+            } else {
+                navigate("/user");  // Navigate to user homepage if not admin
+            }
         },
     });
 
