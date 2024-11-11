@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import avatar from './img1.jpg'; // Default avatar
 import { logout } from '../../Store/Auth/Action';
 import { useTheme } from '../../ThemeContext/ThemeContext';
 
@@ -12,11 +11,11 @@ function CustomNavbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    // Fetch updated user information from Redux store
+    // Retrieve user information from Redux store
     const user = useSelector((state) => state.auth.user);
     const userId = user?.id || 16;
-    const userName = user?.name || "User";  // Dynamically fetched user name
-    const userAvatar = user?.avatar || avatar;  // Dynamically fetched user avatar or default image
+    const userName = user?.fullName || "User";  // Use fullName for displaying user name
+    const userImage = user?.image || 'default-avatar.jpg';  // Use user image or fallback to a default image
 
     const handleLogout = () => {
         dispatch(logout());
@@ -39,8 +38,8 @@ function CustomNavbar() {
                         <div className="hidden lg:flex space-x-6">
                             <Link to="/" className="hover:text-blue-600 transition duration-300 no-underline">Home</Link>
                             <Link to="/dashboard" className="hover:text-blue-600 transition duration-300 no-underline">Dashboard</Link>
-                            <Link to="/events" className="hover:text-blue-600 transition duration-300 no-underline">Events</Link>
-                            <Link to="/attendance" className="hover:text-blue-600 transition duration-300 no-underline">Classes</Link>
+                            <Link to="/members" className="hover:text-blue-600 transition duration-300 no-underline">Member</Link>
+                            <Link to="/assignment" className="hover:text-blue-600 transition duration-300 no-underline">Assignment</Link>
                             <Link to="/notification" className="hover:text-blue-600 transition duration-300 no-underline">Notification</Link>
                         </div>
                     </div>
@@ -58,7 +57,7 @@ function CustomNavbar() {
                             onClick={() => setDropdownOpen(!dropdownOpen)}
                         >
                             <img
-                                src={userAvatar}  // Dynamically update the avatar
+                                src={userImage}  // Use user's image or default avatar
                                 alt="Profile"
                                 className="rounded-full w-10 h-10 border border-gray-300 hover:border-blue-400 transition duration-300"
                                 style={{ borderRadius: '50%' }}  // Make avatar circular
@@ -92,8 +91,8 @@ function CustomNavbar() {
                 <div className="lg:hidden bg-white shadow-lg">
                     <Link to="/" className="block px-4 py-2 hover:bg-gray-100 no-underline">Home</Link>
                     <Link to="/dashboard" className="block px-4 py-2 hover:bg-gray-100 no-underline">Dashboard</Link>
-                    <Link to="/events" className="block px-4 py-2 hover:bg-gray-100 no-underline">Events</Link>
-                    <Link to="/attendance" className="block px-4 py-2 hover:bg-gray-100 no-underline">Classes</Link>
+                    <Link to="/members" className="block px-4 py-2 hover:bg-gray-100 no-underline">Member</Link>
+                    <Link to="/assignment" className="block px-4 py-2 hover:bg-gray-100 no-underline">Assignment</Link>
                     <Link to="/notification" className="block px-4 py-2 hover:bg-gray-100 no-underline">Notification</Link>
                 </div>
             )}

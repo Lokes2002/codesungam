@@ -10,10 +10,12 @@ import { getUserProfile } from './Store/Auth/Action';
 import { ThemeProvider } from './ThemeContext/ThemeContext';
 import Dashboard from './components/Dashboard/dashboard';
 import CustomNavbar from './components/Navbar/CustomNavbar';
-import Attendance from './components/Classes/attandance';
 import Notification from './components/Notification/notification';
 import Profile from './components/Profile/Profile';
 import AdminPage from './admin/Homepage/AdminPage';
+import Assignment from './components/Assignment/Assignment';
+import Member from './components/Member/Member';
+import AllMembers from './components/Member/AllMembers';
 
 function App() {
     const jwt = localStorage.getItem("jwt");
@@ -39,10 +41,11 @@ function App() {
       <Authentication /> )}/> 
                 <Route path="/dashboard" element={( <><CustomNavbar /> <Dashboard/> </> )} />
                 <Route path="/admin" element={(  <AdminPage/> )} />
-                    <Route path="/attendance" element={( <><CustomNavbar /> <Attendance/> </> )} />
                     <Route path="/notification" element={( <><CustomNavbar /> <Notification/> </> )} />
                     <Route path="/profile/:id" element={( <><CustomNavbar /> <Profile/> </> )} />
-                    
+                    <Route path="/members" element={( <><CustomNavbar /> <Member/> </> )} />
+                    <Route path="/assignment" element={( <><CustomNavbar /> <Assignment/> </> )} />
+                    <Route path="/all-members" element={(<><CustomNavbar /> <AllMembers /> </>)} />
                
                 </Routes>
             </div>

@@ -24,6 +24,7 @@ import {
     UPDATE_USER_SUCCESS,
     FETCH_FOLLOWERS_SUCCESS,
     FETCH_FOLLOWING_SUCCESS,
+    GET_ALL_USERS,
 } from "./ActionType";
 
 const initialState = {
@@ -92,6 +93,9 @@ export const authReducer = (state = initialState, action) => {
 
         case LOGOUT:
             return initialState;
+
+        case GET_ALL_USERS:
+        return { ...state, allUsers: action.payload };
 
         default:
             return state;

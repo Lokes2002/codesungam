@@ -27,6 +27,7 @@ import {
     GET_FOLLOWERS_REQUEST,
     GET_FOLLOWERS_SUCCESS,
     GET_FOLLOWERS_FAILURE,
+    GET_ALL_USERS,
 } from "./ActionType";
 
 import api, { API_BASE_URL } from "../../config/api";
@@ -50,6 +51,19 @@ export const loginUser = (loginData) => async (dispatch) => {
         dispatch({ type: LOGIN_USER_FAILURE });
     }
 };
+
+
+
+export const getAllUsers = () => async (dispatch) => {
+    try {
+        const response = await axios.get('http://localhost:5000/api/users/all-members', {
+            headers: getAuthHeaders(),
+        });
+        dispatch({ type: GET_ALL_USERS, payload: response.data });
+    } catch (error) {
+        console.error('Error fetching all users:', error);
+    }
+}
 
 export const registerUser = (registerData) => async (dispatch) => {
     dispatch({ type: REGISTER_USER_REQUEST });

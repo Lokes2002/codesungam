@@ -7,14 +7,14 @@ export const uploadToCloudnary = async (file, resourceType) => {
     try {
         const data = new FormData();
         data.append("file", file);
-        data.append("upload_preset", "twit-spare");
+        data.append("upload_preset", "twit-spare"); // Adjust this preset if needed
 
-        const cloudName = "debtpp9lv";
+        const cloudName = "debtpp9lv"; // Replace with your actual Cloudinary cloud name
         const url = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
 
         const res = await fetch(url, {
             method: "POST",
-            body: data
+            body: data,
         });
 
         const fileData = await res.json();
@@ -25,10 +25,8 @@ export const uploadToCloudnary = async (file, resourceType) => {
         }
 
         if (fileData.resource_type === 'video') {
-            // For videos, use the secure_url for playback
             return fileData.secure_url.toString();
         } else {
-            // For images, use the secure_url if available; otherwise, use url
             return fileData.secure_url || fileData.url;
         }
     } catch (error) {

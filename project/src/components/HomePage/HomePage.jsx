@@ -14,11 +14,11 @@ function Home() {
     const sliderSettings = {
         dots: true,
         infinite: true,
-        speed: 500,
+        speed: 1000,
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 3000,
+        autoplaySpeed: 8000,
     };
 
     // Handle form data
@@ -119,17 +119,18 @@ function Home() {
 
             {/* Footer Section */}
             <footer className="footer-section">
-                <div className="contact-info">
+              <center>  <div className="contact-info">
                     <h3>Contact Us</h3>
                     <p>Email: info@college.edu</p>
                     <p>Phone: +123-456-7890</p>
                     <p>Address: 123 College St, City, State, Zip</p>
                 </div>
-                <div className="social-media">
+                </center>
+                <span> <div className="social-media">
                     <h3>Follow Us</h3>
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                    <span> <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                         <FaFacebook size={20} /> Facebook
-                    </a>
+                    </a></span>
                     <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
                         <FaTwitter size={20} /> Twitter
                     </a>
@@ -140,6 +141,7 @@ function Home() {
                         <FaYoutube size={20} /> YouTube
                     </a>
                 </div>
+                </span>
             </footer>
         </div>
     );
